@@ -102,6 +102,12 @@ const $ = function (selector) {
 $.prototype.init = function (selector) {
   if (!selector) {
     return this; //возвращает пустой объект
+  }
+
+  if (selector.tagName) {
+    this[0] = selector;
+    this.length = 1;
+    return this;
   } //Код, приведенный ниже, копирует все свойства объекта, полученного через селектор, данному возвращаемому объекту
 
 
@@ -127,13 +133,121 @@ window.$ = $;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./core */ "./src/js/lib/core.js");
-/* harmony import */ var _modules_display__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/display */ "./src/js/lib/modules/display.js");
+/* harmony import */ var _core_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./core.js */ "./src/js/lib/core.js");
+/* harmony import */ var _modules_display_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/display.js */ "./src/js/lib/modules/display.js");
+/* harmony import */ var _modules_classes_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/classes.js */ "./src/js/lib/modules/classes.js");
+/* harmony import */ var _modules_actions_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/actions.js */ "./src/js/lib/modules/actions.js");
  //Импортируем ядро библиотеки
 
  //Импортируем модули билиотеки (функционал)
 
-/* harmony default export */ __webpack_exports__["default"] = (_core__WEBPACK_IMPORTED_MODULE_0__["default"]);
+
+
+/* harmony default export */ __webpack_exports__["default"] = (_core_js__WEBPACK_IMPORTED_MODULE_0__["default"]);
+
+/***/ }),
+
+/***/ "./src/js/lib/modules/actions.js":
+/*!***************************************!*\
+  !*** ./src/js/lib/modules/actions.js ***!
+  \***************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _core_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core.js */ "./src/js/lib/core.js");
+
+
+_core_js__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.on = function (action, callback) {
+  for (let i = 0; i < this.length; i++) {
+    if (!action || !callback) {
+      continue;
+    }
+
+    this[i].addEventListener(action, callback);
+  }
+
+  return this;
+};
+
+_core_js__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.off = function (action, callback) {
+  for (let i = 0; i < this.length; i++) {
+    if (!action || !callback) {
+      continue;
+    }
+
+    this[i].removeEventListener(action, callback);
+  }
+
+  return this;
+};
+
+_core_js__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.click = function (callback) {
+  for (let i = 0; i < this.length; i++) {
+    if (callback) {
+      this[i].addEventListener('click', callback);
+    }
+    /* else {
+        this.click(); 
+    } */
+
+  }
+
+  return this;
+};
+
+/***/ }),
+
+/***/ "./src/js/lib/modules/classes.js":
+/*!***************************************!*\
+  !*** ./src/js/lib/modules/classes.js ***!
+  \***************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _core_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core.js */ "./src/js/lib/core.js");
+
+
+_core_js__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.addClasses = function (...classNames) {
+  for (let i = 0; i < this.length; i++) {
+    if (!this[i].classList) {
+      continue;
+    }
+
+    this[i].classList.add(...classNames);
+  }
+
+  return this;
+};
+
+_core_js__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.removeClasses = function (...classNames) {
+  for (let i = 0; i < this.length; i++) {
+    if (!this[i].classList) {
+      continue;
+    }
+
+    this[i].classList.remove(...classNames);
+  }
+
+  return this;
+};
+
+_core_js__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.toggleClasses = function (...classNames) {
+  for (let i = 0; i < this.length; i++) {
+    if (!this[i].classList) {
+      continue;
+    }
+
+    classNames.forEach(className => {
+      this[i].classList.toggle(className);
+    });
+  }
+
+  return this;
+};
 
 /***/ }),
 
@@ -202,11 +316,17 @@ _core_js__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.toggle = function () 
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _lib_lib_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./lib/lib.js */ "./src/js/lib/lib.js");
 
+
 /* let oneWord = _('div').get().textContent;
 let message = $('div').hide(); */
 
-$('div').hide();
-$('div').toggle(); //console.log(oneWord);
+function sayHi() {
+  alert('Hello');
+}
+
+Object(_lib_lib_js__WEBPACK_IMPORTED_MODULE_0__["default"])('div').on('click', sayHi);
+Object(_lib_lib_js__WEBPACK_IMPORTED_MODULE_0__["default"])('div').off('click', sayHi);
+Object(_lib_lib_js__WEBPACK_IMPORTED_MODULE_0__["default"])('div').click(sayHi); //console.log(oneWord);
 //console.log(message);
 
 /***/ })

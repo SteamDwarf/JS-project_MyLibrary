@@ -1,9 +1,18 @@
 import './lib/lib.js';
+import $ from './lib/lib.js';
 
 /* let oneWord = _('div').get().textContent;
 let message = $('div').hide(); */
-$('div').hide();
-$('div').toggle();
+function sayHi() {
+    alert('Hello');
+}
+
+$('div').on('click', sayHi);
+$('div').off('click', sayHi);
+$('div').click(sayHi);
+
+
+
 
 
 //console.log(oneWord);
