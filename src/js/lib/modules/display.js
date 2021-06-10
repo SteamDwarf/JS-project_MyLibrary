@@ -1,5 +1,14 @@
 import $ from '../core.js';
 
+/**
+ * Модуль, работающий с отображением DOM-элементов.
+ *@module display 
+ */
+
+ /**
+  * Устанавливает DOM-элементу display: ''
+  * @returns {Object}
+  */
 $.prototype.show = function () {
     for(let i = 0; i < this.length; i++) {
 
@@ -11,6 +20,10 @@ $.prototype.show = function () {
     return this;
 };
 
+ /**
+  * Устанавливает DOM-элементу display: 'none'
+  * @returns {Object}
+  */
 $.prototype.hide = function () {
     for(let i = 0; i < this.length; i++) {
 
@@ -22,6 +35,10 @@ $.prototype.hide = function () {
     return this;
 };
 
+ /**
+  * Переключает у DOM-элемента стиль display c '' на none и наоборот
+  * @returns {Object}
+  */
 $.prototype.toggle = function() {
     for(let i = 0; i < this.length; i++) {
 

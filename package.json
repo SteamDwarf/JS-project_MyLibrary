@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "doc": "jsdoc -c jsdoc.json"
   },
   "author": "",
   "license": "ISC",
@@ -22,10 +22,12 @@
     "babel-loader": "^8.0.6",
     "browser-sync": "^2.26.7",
     "core-js": "^3.4.2",
+    "eslint": "^7.28.0",
     "gulp": "^4.0.2",
     "gulp-clean-css": "^4.2.0",
     "gulp-postcss": "^8.0.0",
     "gulp-sass": "^4.0.2",
+    "jsdoc": "^3.6.7",
     "webpack": "^4.41.2",
     "webpack-stream": "^5.2.1"
   }

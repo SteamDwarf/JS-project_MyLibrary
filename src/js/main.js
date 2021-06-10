@@ -7,9 +7,10 @@ function sayHi() {
     alert('Hello');
 }
 
-$('div').on('click', sayHi);
+$('div').on(sayHi, sayHi);
+/* $('div').on('click', sayHi);
 $('div').off('click', sayHi);
-$('div').click(sayHi);
+$('div').click(sayHi); */
 
 
 
