@@ -1,14 +1,10 @@
 import $ from '../core.js';
 
 /**
- * Работа с классами
- * @module classes
- */
-
-
-/**
- * Добавляет DOM-элементам классы
- * @property {function} addClasses
+ * @description Добавляет DOM-элементам классы
+ * @memberof $.prototype
+ * @function
+ * @name addClasses
  * @param  {...string} classNames 
  * @returns {Object}
  */
@@ -25,8 +21,10 @@ $.prototype.addClasses = function(...classNames) {
 };
 
 /**
- * Удаляет DOM-элементов классы
- * @property {function} removeClasses
+ * @description Удаляет DOM-элементов классы
+ * @memberof $.prototype
+ * @function
+ * @name removeClasses
  * @param  {...string} classNames 
  * @returns {Object}
  */
@@ -42,8 +40,10 @@ $.prototype.removeClasses = function(...classNames) {
 };
 
 /**
- * Переключает у DOM-элементов классы
- * @property {function} toggleClasses
+ * @description Переключает у DOM-элементов классы
+ * @memberof $.prototype
+ * @function
+ * @name toggleClasses
  * @param  {...string} classNames 
  * @returns {Object}
  */

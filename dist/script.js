@@ -96,6 +96,7 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /**
+ * @class $
  * @param {string} selector 
  * @returns {Object}
  */
@@ -104,10 +105,13 @@ const $ = function (selector) {
 };
 /**
  * Если в качестве параметра ничего не передается, то возвращается пустой объект.
- * Если в качестве параметра передается объект, то возвращает обьъект DOM-элемента, со свойством @type {number} length.
- * Если в качестве параметра получает строку-селектор, то возвращает объект DOM-элементов, со свойством @type {number} length.
+ * Если в качестве параметра передается объект, то возвращает обьъект DOM-элемента, со свойством length.
+ * Если в качестве параметра получает строку-селектор, то возвращает объект DOM-элементов, со свойством length.
+ * @memberof $.prototype
+ * @function
+ * @name init
  * @param {undefined | string | Object} selector 
- * @returns {Object} 
+ * @returns {Object}
  */
 
 
@@ -149,13 +153,188 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_display_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/display.js */ "./src/js/lib/modules/display.js");
 /* harmony import */ var _modules_classes_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/classes.js */ "./src/js/lib/modules/classes.js");
 /* harmony import */ var _modules_eventListeners_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/eventListeners.js */ "./src/js/lib/modules/eventListeners.js");
+/* harmony import */ var _modules_actions_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/actions.js */ "./src/js/lib/modules/actions.js");
+/* harmony import */ var _modules_effects_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/effects.js */ "./src/js/lib/modules/effects.js");
  //Импортируем ядро библиотеки
 
  //Импортируем модули билиотеки (функционал)
 
 
 
+
+
 /* harmony default export */ __webpack_exports__["default"] = (_core_js__WEBPACK_IMPORTED_MODULE_0__["default"]);
+
+/***/ }),
+
+/***/ "./src/js/lib/modules/actions.js":
+/*!***************************************!*\
+  !*** ./src/js/lib/modules/actions.js ***!
+  \***************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _core_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core.js */ "./src/js/lib/core.js");
+
+/**
+ * @description Получение или изменение текста внутри HTML элемента
+ * @memberof $.prototype
+ * @function
+ * @name htmlText
+ * @param {string | undefined} content 
+ * @returns {Object | string}
+ */
+
+_core_js__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.htmlText = function (content) {
+  for (let i = 0; i < this.length; i++) {
+    if (content) {
+      this[i].innerHTML = content;
+    } else {
+      return this[i].innerHTML;
+    }
+  }
+
+  return this;
+};
+/**
+ * @description Возвращает элемент, под определенным индексом, начиная с нуля
+ * @memberof $.prototype
+ * @function
+ * @name eq
+ * @param {number} i 
+ * @returns {Object}
+ */
+
+
+_core_js__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.eq = function (i) {
+  const element = this[i];
+  const objLength = Object.keys(this).length;
+
+  for (let j = 0; j < objLength; j++) {
+    delete this[j];
+  }
+
+  this[0] = element;
+  this.length = 1;
+  return this;
+};
+/**
+ * @description Возвращает индекс под которым данный элемент находится в родительском элементе.
+ * Данный метод используется в связке с методом, возвращающим объект, содержащий один DOM-элемент.
+ * @memberof $.prototype
+ * @function
+ * @name indexElem
+ * @returns {number}
+ */
+
+
+_core_js__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.indexElem = function () {
+  const parent = this[0].parentNode;
+  const children = [...parent.children]; //Разворачиваем HTML-коллекцию с помощью spread оператора в обычный массив;
+
+  const findMyIndex = item => {
+    return item == this[0];
+  };
+
+  return children.findIndex(findMyIndex);
+};
+/**
+ * @description Среди полученых объектов, ищет внутри них объекты по определенному селектору.
+ * @memberof $.prototype
+ * @function
+ * @name findElems
+ * @param {string} selector 
+ * @returns {Object}
+ */
+
+
+_core_js__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.findElems = function (selector) {
+  let arrayElem = [];
+  let numOfElements = this.length;
+  let copyThis = Object.assign({}, this);
+
+  for (let i = 0; i < numOfElements; i++) {
+    let elem = copyThis[i].querySelectorAll(selector);
+
+    if (elem.length > 0) {
+      arrayElem.push(...elem);
+    }
+
+    delete this[i];
+  }
+
+  for (let i = 0; i < arrayElem.length; i++) {
+    this[i] = arrayElem[i];
+  }
+
+  this.length = arrayElem.length;
+  return this;
+};
+/**
+ * @description Вызвается на объекте DOM-элементов, ищет ближайшие к каждому из них элементы по определеннорму селектору, и возвращает объект с этими элементами.
+ * Под ближайшими подразумевается сам объект или его родитель
+ * @memberof $.prototype
+ * @function
+ * @name closest
+ * @param {string} selector 
+ * @returns {Object}
+ */
+
+
+_core_js__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.closest = function (selector) {
+  let arrayElem = [];
+  let copyThis = Object.assign({}, this);
+
+  for (let i = 0; i < this.length; i++) {
+    let elem = copyThis[i].closest(selector);
+
+    if (elem) {
+      arrayElem.push(elem);
+    }
+
+    delete this[i];
+  }
+
+  for (let i = 0; i < arrayElem.length; i++) {
+    this[i] = arrayElem[i];
+  }
+
+  this.length = arrayElem.length;
+  return this;
+};
+/**
+ * @description Возвращает объект DOM-элементов, которые являются соседями элемента на котором был вызван данный метод.
+ * Данный метод используется в связке с методом, возвращающим объект, содержащий один DOM-элемент.
+ * @memberof $.prototype
+ * @function
+ * @name getNeighbours
+ * @returns {Object}
+ */
+
+
+_core_js__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.getNeighbours = function () {
+  const thisElem = this[0];
+  const children = this[0].parentNode.children;
+  let arrayElem = [];
+
+  for (let i = 0; i < children.length; i++) {
+    if (children[i] === thisElem) {
+      continue;
+    }
+
+    arrayElem.push(children[i]);
+    delete this[i];
+  }
+
+  for (let i = 0; i < arrayElem.length; i++) {
+    this[i] = arrayElem[i];
+  }
+
+  this.length = arrayElem.length;
+  return this;
+};
 
 /***/ }),
 
@@ -171,13 +350,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _core_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core.js */ "./src/js/lib/core.js");
 
 /**
- * Работа с классами
- * @module classes
- */
-
-/**
- * Добавляет DOM-элементам классы
- * @property {function} addClasses
+ * @description Добавляет DOM-элементам классы
+ * @memberof $.prototype
+ * @function
+ * @name addClasses
  * @param  {...string} classNames 
  * @returns {Object}
  */
@@ -194,8 +370,10 @@ _core_js__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.addClasses = function
   return this;
 };
 /**
- * Удаляет DOM-элементов классы
- * @property {function} removeClasses
+ * @description Удаляет DOM-элементов классы
+ * @memberof $.prototype
+ * @function
+ * @name removeClasses
  * @param  {...string} classNames 
  * @returns {Object}
  */
@@ -213,8 +391,10 @@ _core_js__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.removeClasses = funct
   return this;
 };
 /**
- * Переключает у DOM-элементов классы
- * @property {function} toggleClasses
+ * @description Переключает у DOM-элементов классы
+ * @memberof $.prototype
+ * @function
+ * @name toggleClasses
  * @param  {...string} classNames 
  * @returns {Object}
  */
@@ -248,12 +428,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _core_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core.js */ "./src/js/lib/core.js");
 
 /**
- * Модуль, работающий с отображением DOM-элементов.
- *@module display 
- */
-
-/**
- * Устанавливает DOM-элементу display: ''
+ * @description Устанавливает DOM-элементу display: ''
+ * @memberof $.prototype
+ * @function
+ * @name show
  * @returns {Object}
  */
 
@@ -269,7 +447,10 @@ _core_js__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.show = function () {
   return this;
 };
 /**
- * Устанавливает DOM-элементу display: 'none'
+ * @description Устанавливает DOM-элементу display: 'none'
+ * @memberof $.prototype
+ * @function
+ * @name hide
  * @returns {Object}
  */
 
@@ -286,7 +467,10 @@ _core_js__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.hide = function () {
   return this;
 };
 /**
- * Переключает у DOM-элемента стиль display c '' на none и наоборот
+ * @description Переключает у DOM-элемента стиль display c '' на none и наоборот.
+ * @memberof $.prototype
+ * @function
+ * @name toggle
  * @returns {Object}
  */
 
@@ -309,6 +493,110 @@ _core_js__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.toggle = function () 
 
 /***/ }),
 
+/***/ "./src/js/lib/modules/effects.js":
+/*!***************************************!*\
+  !*** ./src/js/lib/modules/effects.js ***!
+  \***************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _core_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core.js */ "./src/js/lib/core.js");
+
+/**
+ * @description Ядро управления анимациями, использующими requestAnimationFrame
+ * @param {number} duration - длительность анимации.
+ * @param {function | undefined} callback - сама анимация.
+ * @param {function | undefined} finallFunction - финальная функция, которая будет выполняться по завершению анимации.
+ * @returns {function} _animateOverTime - служебная функция, которую в дальнейшем передаем в requestAnimationFrame. 
+ */
+
+_core_js__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.animateOverTime = function (duration, callback, finallFunction) {
+  let timeStart; //Служебная функция управления анимацией
+
+  function _animateOverTime(time) {
+    let timeElapsed;
+    let complection;
+
+    if (!timeStart) {
+      timeStart = time;
+    }
+
+    timeElapsed = time - timeStart; //Сколько времени длится анимация.
+
+    complection = Math.min(timeElapsed / duration, 1); //Насколько завершена данная анимация.
+
+    callback(complection);
+
+    if (timeElapsed < duration) {
+      requestAnimationFrame(_animateOverTime);
+    } else {
+      if (typeof finallFunction === 'function') {
+        finallFunction();
+      }
+    }
+  }
+
+  return _animateOverTime;
+};
+/**
+ * @description Функция, вызывающая анимацию fadeIn - плавное появление элемента.
+ * @param {number} duration - длительность анимации 
+ * @param {string | undefined} display - свойство display для элемента. По умолчанию block.
+ * @param {function | undefined} finallyFunction - финальная функция, которая будет выполняться по завершению анимации.
+ * @returns {Object}
+ */
+
+
+_core_js__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.fadeIn = function (duration, display = 'block', finallyFunction) {
+  for (let i = 0; i < this.length; i++) {
+    let _fadeIn;
+
+    let anim;
+    this[i].style.display = display;
+
+    _fadeIn = complection => {
+      this[i].style.opacity = complection;
+    };
+
+    anim = this.animateOverTime(duration, _fadeIn, finallyFunction);
+    requestAnimationFrame(anim);
+  }
+
+  return this;
+};
+/**
+ * @description Функция, вызывающая анимацию fadeOut - плавное скрытие элементов страницы.
+ * @param {number} duration - длительность 
+ * @param {function | undefined} finallyFunction - финальная функция, которая будет выполняться по завершению анимации.
+ * @returns {Object}
+ */
+
+
+_core_js__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.fadeOut = function (duration, finallyFunction) {
+  for (let i = 0; i < this.length; i++) {
+    let _fadeOut;
+
+    let anim;
+
+    _fadeOut = complection => {
+      this[i].style.opacity = 1 - complection;
+
+      if (complection >= 1) {
+        this[i].style.display = 'none';
+      }
+    };
+
+    anim = this.animateOverTime(duration, _fadeOut, finallyFunction);
+    requestAnimationFrame(anim);
+  }
+
+  return this;
+};
+
+/***/ }),
+
 /***/ "./src/js/lib/modules/eventListeners.js":
 /*!**********************************************!*\
   !*** ./src/js/lib/modules/eventListeners.js ***!
@@ -321,12 +609,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _core_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core.js */ "./src/js/lib/core.js");
 
 /**
- * Работа с обработчиками события
- * @module eventListeners
- */
-
-/**
- * @property {function} on - Добавляет элементу обработчик событий
+ * @description Добавляет элементу обработчик событий
+ * @memberof $.prototype
+ * @function
+ * @name on
  * @param {string} action - событие
  * @param {function} callback - функция вызываемая при событии
  * @returns {Object}
@@ -344,7 +630,10 @@ _core_js__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.on = function (action
   return this;
 };
 /**
- * Удаление с элемента обработчика события
+ * @description Удаление с элемента обработчика события
+ * @memberof $.prototype
+ * @function
+ * @name off
  * @param {string} action - событие
  * @param {function} callback - функция вызываемая при событии
  * @returns {Object}
@@ -363,7 +652,10 @@ _core_js__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.off = function (actio
   return this;
 };
 /**
- * Добавляет элементу обработчик события, реагирущий на нажатие мышкой
+ * @description Добавляет элементу обработчик события, реагирущий на нажатие мышкой.
+ * @memberof $.prototype
+ * @function
+ * @name click
  * @param {function} callback - функция вызываемая при событии
  * @returns {Object}
  */
@@ -400,14 +692,36 @@ __webpack_require__.r(__webpack_exports__);
 /* let oneWord = _('div').get().textContent;
 let message = $('div').hide(); */
 
+let divShowed = true;
+
 function sayHi() {
-  alert('Hello');
+  console.log('Hello');
 }
 
-Object(_lib_lib_js__WEBPACK_IMPORTED_MODULE_0__["default"])('div').on(sayHi, sayHi);
+function fadeOutAllDivs() {
+  Object(_lib_lib_js__WEBPACK_IMPORTED_MODULE_0__["default"])('div').fadeOut(1000, function () {
+    console.log('Все элементы div скрыты');
+  });
+}
+
+function fadeInAllDivs() {
+  Object(_lib_lib_js__WEBPACK_IMPORTED_MODULE_0__["default"])('div').fadeIn(1000, 'flex', function () {
+    console.log('Все элементы показаны');
+  });
+}
 /* $('div').on('click', sayHi);
-$('div').off('click', sayHi);
-$('div').click(sayHi); */
+$('div').off('click', sayHi);*/
+
+
+Object(_lib_lib_js__WEBPACK_IMPORTED_MODULE_0__["default"])('button').click(function () {
+  if (divShowed) {
+    fadeOutAllDivs();
+    divShowed = false;
+  } else {
+    fadeInAllDivs();
+    divShowed = true;
+  }
+}); //console.log($('div').findElems('.test'));
 //console.log(oneWord);
 //console.log(message);
 
